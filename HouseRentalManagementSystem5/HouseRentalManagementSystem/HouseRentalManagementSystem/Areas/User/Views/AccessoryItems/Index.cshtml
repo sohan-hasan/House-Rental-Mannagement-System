@@ -1,0 +1,273 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-6 my-3">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" data-ajax="true"
+                      data-ajax-update="#typeDivAjax"
+                      data-ajax-loading="#TypeLoadingImage"
+                      data-ajax-loading-duration="2000"
+                      data-ajax-confirm="Are You Sure to Save this Data?"
+                      data-ajax-complete="Clear"
+                      asp-area="User" asp-action="TypeCreate" asp-controller="AccessoryItems" enctype="multipart/form-data">
+                    <div class="pl-0">
+                        <div><span class="sub_page_header d-inline-block">Apartment Type</span></div>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="input-group">
+                        <input type="text" id="AptTypeDescription" name="AptTypeDescription" class="form-control w-25" />
+                        <span class="input-group-btn">
+                            <button class="btn btn_sub_page">Add New Type</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="col-md-12" id="TypeLoadingImage" style="display:none;">
+                    <img src="~/images/app_images/loding.gif" width="100" height="100" />
+                </div>
+                <div class="my-5" id="typeDivAjax">
+                    <partial name="~/Areas/User/Views/AccessoryItems/_ApartmentTypeList.cshtml" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 my-3">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" data-ajax="true"
+                      data-ajax-update="#divAjax"
+                      data-ajax-loading="#LoadingImage"
+                      data-ajax-loading-duration="2000"
+                      data-ajax-confirm="Are You Sure to Save this Data?"
+                      data-ajax-complete="Clear"
+                      asp-area="User" asp-action="FacilityCreate" asp-controller="AccessoryItems" enctype="multipart/form-data">
+                    <div class="pl-0">
+                        <div><span class="sub_page_header d-inline-block">Apartment Facilities</span></div>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="input-group">
+                        <input type="text" id="FacilityDescription" name="FacilityDescription" class="form-control w-25" />
+                        <span class="input-group-btn">
+                            <button class="btn btn_sub_page">Add New Facility</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="col-md-12" id="LoadingImage" style="display:none;">
+                    <img src="~/images/app_images/loding.gif" width="100" height="100" />
+                </div>
+                <div class="my-5" id="divAjax">
+                    <partial name="~/Areas/User/Views/AccessoryItems/_FacilityList.cshtml" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 my-3">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" data-ajax="true"
+                      data-ajax-update="#bookingStatusdivAjax"
+                      data-ajax-loading="#bookingStatusLoadingImage"
+                      data-ajax-loading-duration="2000"
+                      data-ajax-confirm="Are You Sure to Save this Data?"
+                      data-ajax-complete="Clear"
+                      asp-area="User" asp-action="BookingStatusCreate" asp-controller="AccessoryItems" enctype="multipart/form-data">
+                    <div class="pl-0">
+                        <div><span class="sub_page_header d-inline-block">Booking Status</span></div>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="input-group">
+                        <input type="text" id="BookingStatusDescription" name="BookingStatusDescription" class="form-control w-25" disabled/>
+                        <span class="input-group-btn">
+                            <button class="btn btn_sub_page" disabled>Add New Status</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="col-md-12" id="bookingStatusLoadingImage" style="display:none;">
+                    <img src="~/images/app_images/loding.gif" width="100" height="100" />
+                </div>
+                <div class="my-5" id="bookingStatusdivAjax">
+                    <partial name="~/Areas/User/Views/AccessoryItems/_BookingStatusList.cshtml" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 my-3">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" data-ajax="true"
+                      data-ajax-update="#paymentTypedivAjax"
+                      data-ajax-loading="#paymentTypeLoadingImage"
+                      data-ajax-loading-duration="2000"
+                      data-ajax-confirm="Are You Sure to Save this Data?"
+                      data-ajax-complete="Clear"
+                      asp-area="User" asp-action="PaymentTypeCreate" asp-controller="AccessoryItems" enctype="multipart/form-data">
+                    <div class="pl-0">
+                        <div><span class="sub_page_header d-inline-block">Payment Type</span></div>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="input-group">
+                        <input type="text" id="PaymentTypeDetails" name="PaymentTypeDetails" class="form-control w-25" />
+                        <span class="input-group-btn">
+                            <button class="btn btn_sub_page">Add New Type</button>
+                        </span>
+                    </div>
+                </form>
+                <div class="col-md-12" id="paymentTypeLoadingImage" style="display:none;">
+                    <img src="~/images/app_images/loding.gif" width="100" height="100" />
+                </div>
+                <div class="my-5" id="paymentTypedivAjax">
+                    <partial name="~/Areas/User/Views/AccessoryItems/_PaymentTypeList.cshtml" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="TypeEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5">
+                <h3 class="modal-title" id="detailsModalLabel">Update Apartment Type</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                <div id="TypeEditDiv">
+                    @if (ViewBag.Details == "Show")
+                    {
+                        <partial name="~/Areas/User/Views/AccessoryItems/_TypeEdit.cshtml" />
+                        ViewBag.Details = "";
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="FacilityEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5">
+                <h3 class="modal-title" id="detailsModalLabel">Update Apartment Facility</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                <div id="FacilityEditDiv">
+                    @if (ViewBag.Details == "Show")
+                    {
+                        <partial name="~/Areas/User/Views/AccessoryItems/_FacilityEdit.cshtml" />
+                        ViewBag.Details = "";
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="StatusEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5">
+                <h3 class="modal-title" id="detailsModalLabel">Update Booking Status</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                <div id="StatusEditDiv">
+                    @if (ViewBag.Details == "Show")
+                    {
+                        <partial name="~/Areas/User/Views/AccessoryItems/_StatusEdit.cshtml" />
+                        ViewBag.Details = "";
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="PaymentTypeEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5">
+                <h3 class="modal-title" id="detailsModalLabel">Update Payment Type</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                <div id="PaymentTypeEditDiv">
+                    @if (ViewBag.Details == "Show")
+                    {
+                        <partial name="~/Areas/User/Views/AccessoryItems/_PaymentTypeEdit.cshtml" />
+                        ViewBag.Details = "";
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function Clear() {
+        $(this).closest('form').find("input[type=text], textarea").val("");
+    }
+
+    function TypeUpdate(id) {
+        $.ajax({
+            url: "/User/AccessoryItems/TypeEdit?id=" + id,
+            type: "GET",
+            data: "",
+            contentType: 'application/json; charset = utf-8',
+            success: function (data) {
+                $('#TypeEditDiv').show();
+                $('#TypeEditDiv').html(data);
+            },
+            error: function () {
+                alert("Error occured")
+            }
+        })
+    }
+
+    function FacilityUpdate(id) {
+        $.ajax({
+            url: "/User/AccessoryItems/FacilityEdit?id=" + id,
+            type: "GET",
+            data: "",
+            contentType: 'application/json; charset = utf-8',
+            success: function (data) {
+                $('#FacilityEditDiv').show();
+                $('#FacilityEditDiv').html(data);
+            },
+            error: function () {
+                alert("Error occured")
+            }
+        })
+    }
+
+    function StatusUpdate(id) {
+        $.ajax({
+            url: "/User/AccessoryItems/StatusEdit?id=" + id,
+            type: "GET",
+            data: "",
+            contentType: 'application/json; charset = utf-8',
+            success: function (data) {
+                $('#StatusEditDiv').show();
+                $('#StatusEditDiv').html(data);
+            },
+            error: function () {
+                alert("Error occured")
+            }
+        })
+    }
+    function PaymentTypeUpdate(id) {
+        $.ajax({
+            url: "/User/AccessoryItems/PaymentTypeEdit?id=" + id,
+            type: "GET",
+            data: "",
+            contentType: 'application/json; charset = utf-8',
+            success: function (data) {
+                $('#PaymentTypeEditDiv').show();
+                $('#PaymentTypeEditDiv').html(data);
+            },
+            error: function () {
+                alert("Error occured")
+            }
+        })
+    }
+</script>

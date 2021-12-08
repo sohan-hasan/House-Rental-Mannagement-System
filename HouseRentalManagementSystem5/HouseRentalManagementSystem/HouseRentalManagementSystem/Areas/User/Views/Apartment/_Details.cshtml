@@ -1,0 +1,82 @@
+﻿@model ApartmentViewModel
+<form enctype="multipart/form-data" asp-action="Create" method="post">
+    <div class="col-md-12 mx-auto">
+        <input type="hidden" asp-for="AptId" />
+        <div class="form-group mb-3">
+            <label asp-for="BuildingShortName" class="form-label"></label>
+            @if (ViewBag.Building != null)
+            {
+                <select asp-for="BuildingId" class="form-control" disabled asp-items="@(new SelectList(@ViewBag.Building,"BuildingId", "BuildingShortName"))">
+                    <option value="">--Select Building Name--</option>
+                </select>
+            }
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="AptTypeCode" class="form-label"></label>
+            @if (ViewBag.Types != null)
+            {
+                <select asp-for="AptTypeCode" class="form-control" disabled asp-items="@(new SelectList(@ViewBag.Types,"AptTypeCode", "AptTypeDescription"))">
+                    <option value="">--Select Apartment Type--</option>
+                </select>
+            }
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="ApartmentName" class="form-label"></label>
+            <input asp-for="ApartmentName" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label">Apartment Facility</label>
+            <div class="card">
+                <ul class="ks-cboxtags">
+                    @if (ViewBag.Facilities != null)
+                    {
+                        @foreach (var item in ViewBag.Facilities)
+                        {
+                            <li>
+                                <input type="checkbox" id="@item.FacilityCode" value="@item.FacilityCode" name="FacilityCode" checked="@item.IsChecked" disabled>
+                                <label for="@item.FacilityCode">@item.FacilityDescription</label>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="form-group position-relative mb-3">
+            <label asp-for="BathroomCount" class="form-label"></label>
+            <input asp-for="BathroomCount" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="BedroomCount" class="form-label"></label>
+            <input asp-for="BedroomCount" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="RoomCount" class="form-label"></label>
+            <input asp-for="RoomCount" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="MonthlyRent" class="form-label"></label>
+            <input asp-for="MonthlyRent" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="SecurityDepositAmount" class="form-label"></label>
+            <input asp-for="SecurityDepositAmount" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="OtherApartmentDetails" class="form-label"></label>
+            <textarea asp-for="OtherApartmentDetails" class="form-control" text-wrap:normal" type="text" placeholder="Write here (Optional)" readonly></textarea>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="ImageName" class="form-label mb-3"></label>
+            <div class="d-flex flex-wrap justify-content-start">
+                @foreach (var image in ViewBag.Images)
+                {<div class="image_container d-flex justify-content-center position-relative">
+                        <img src="./../../../images/apartment_images/@image.ImageName" alt="Image">
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <input type="button" value="Close" data-bs-dismiss="modal" class="btn btn_modal_close" />
+        </div>
+    </div>
+</form>

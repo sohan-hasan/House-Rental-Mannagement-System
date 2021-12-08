@@ -1,0 +1,53 @@
+﻿@model dynamic
+<div>
+    <table class="table table-bordered table-striped list_table">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    ###
+                </th>
+                <th>
+                    Booking Status
+                </th>
+                <th class="text-center tbl_action">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.BookingStatusViewModel)
+            {
+                <tr>
+                    <td class="text-center">
+                        @item.SirialNumber
+                    </td>
+                    <td>
+                        @item.BookingStatusDescription
+                    </td>
+                    <td class="text-center">
+                        @*<div class="btn-group">
+                            <div class="dropdown">
+                                <a class="btn_table dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" onclick='StatusUpdate(@item.BookingStatusCode)' data-bs-toggle="modal" data-bs-target="#StatusEditModal">Edit</a></li>
+                                    <li><a class="dropdown-item" asp-area="User" asp-controller="AccessoryItems" asp-action="StatusDelete" asp-route-id="@item.BookingStatusCode" onclick="return confirm('Are you sure to delete?')">Delete</a></li>
+                                </ul>
+                            </div>
+                        </div>*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <div class="page_section">
+        @Html.PagedListPager((IPagedList)Model.BookingStatusViewModel, bookingStatusPage => Url.Action("Index", new { bookingStatusPage = bookingStatusPage }),
+    new X.PagedList.Web.Common.PagedListRenderOptions
+    {
+        ContainerDivClasses = new[] { "navication" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+    })
+    </div>
+</div>

@@ -1,0 +1,231 @@
+﻿@model IEnumerable<ApartmentViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <div class="pl-0">
+        <div><span class="page_header">Apartment</span></div>
+        <div style="padding-left:0">
+            <button type="button" class="btn_add_new" data-bs-toggle="modal" data-bs-target="#CreateModal">Create New</button>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped list_table">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    @Html.ActionLink("###", "Index", new { SortOrder = ViewBag.SortNameParam }, new { @class = "text-decoration-none text-white" })
+                </th>
+                <th>
+                    Apartment Type
+                </th>
+                <th>
+                    Building Name
+                </th>
+                <th>
+                    Apartment Name
+                </th>
+                <th class="text-center">
+                    No.Of Bathroom
+                </th>
+                <th class="text-center">
+                    No. Of BedRoom
+                </th>
+                <th class="text-center">
+                    No. Of Room
+                </th>
+                <th class="text-right">
+                    Monthly Rent
+                </th>
+                <th class="text-right">
+                    Security Amount
+                </th>
+                <th class="tbl_large_field">
+                    Apartment Details
+                </th>
+                <th class="text-center">
+                    Building Image
+                </th>
+                <th class="text-center tbl_action">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        @item.SirialNumber
+                    </td>
+                    <td>
+                        @item.AptTypeDescription
+                    </td>
+                    <td>
+                        @item.BuildingShortName
+                    </td>
+                    <td>
+                        @item.ApartmentName
+                    </td>
+                    <td class="text-center">
+                        @item.BathroomCount
+                    </td>
+                    <td class="text-center">
+                        @item.BedroomCount
+                    </td>
+                    <td class="text-center">
+                        @item.RoomCount
+                    </td>
+                    <td class="text-right">
+                        @item.MonthlyRent
+                    </td>
+                    <td class="text-right">
+                        @item.SecurityDepositAmount
+                    </td>
+                    <td class="tbl_large_field">
+                        @item.OtherApartmentDetails
+                    </td>
+                    <td class="text-center">
+                        <a class="btn_view_images" onclick='ViewImages(@item.AptId)' data-bs-toggle="modal" data-bs-target="#ViewImagesModal">View&nbsp;Images</a>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <div class="dropdown">
+                                <a class="btn_table dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" asp-area="User" asp-controller="Apartment" asp-action="Edit" asp-route-id="@item.AptId">Edit</a></li>
+                                    <li><a class="dropdown-item" asp-area="User" asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.AptId" onclick="return confirm('Are you sure to delete?')">Delete</a></li>
+                                    <li><a class="dropdown-item" onclick='Details(@item.AptId)' data-bs-toggle="modal" data-bs-target="#DetailsModal">Details</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <div class="search_section">
+        <form asp-action="Index" method="get">
+            <div>
+                <span class="search_title">Find By Short Name: </span>
+                <input type="text" class="input_search" name="SearchString" value="@ViewBag.CurrentFilter" />
+                <input type="submit" value="Search" class="btn_search" />
+                <a asp-action="Index" class="btn_back_to_list">Back to List</a>
+            </div>
+        </form>
+    </div>
+    <div class="page_section">
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+    new X.PagedList.Web.Common.PagedListRenderOptions
+    {
+        ContainerDivClasses = new[] { "navication" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+    })
+    </div>
+</div>
+<div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="CreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5">
+                <h3 class="modal-title" id="detailsModalLabel">Create Apartment</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                @await Html.PartialAsync("_Create", new ApartmentViewModel())
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header px-md-5">
+                    <h3 class="modal-title" id="detailsModalLabel">Update Building</h3>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-md-5">
+                    <div id="EditDiv">
+                        @if (ViewBag.Details == "Show")
+                        {
+                            <partial name="~/Areas/User/Views/Apartment/_Edit.cshtml" />
+                            ViewBag.Details = "";
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+<div class="modal fade" id="DetailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5 ba">
+                <h3 class="modal-title" id="detailsModalLabel">Apartment Details</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                <div id="DetailsDiv">
+                    @if (ViewBag.Details == "Show")
+                    {
+                        <partial name="~/Areas/User/Views/Apartment/_Details.cshtml" />
+                        ViewBag.Details = "";
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ViewImagesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5 ba">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                <div id="ViewImagesDiv">
+                    @if (ViewBag.ViewImages == "Show")
+                    {
+                        <partial name="~/Areas/User/Views/Apartment/_ViewImages.cshtml" />
+                        ViewBag.ViewImages = "";
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function ViewImages(id) {
+        $.ajax({
+            url: "/User/Apartment/ViewImages?id=" + id,
+            type: "GET",
+            data: "",
+            contentType: 'application/json; charset = utf-8',
+            success: function (data) {
+                $('#ViewImagesDiv').show();
+                $('#ViewImagesDiv').html(data);
+            },
+            error: function () {
+                alert("Error occured")
+            }
+        })
+    }
+    function Details(id) {
+        $.ajax({
+            url: "/User/Apartment/Details?id=" + id,
+            type: "GET",
+            data: "",
+            contentType: 'application/json; charset = utf-8',
+            success: function (data) {
+                $('#DetailsDiv').show();
+                $('#DetailsDiv').html(data);
+            },
+            error: function () {
+                alert("Error occured")
+            }
+        })
+    }
+</script>

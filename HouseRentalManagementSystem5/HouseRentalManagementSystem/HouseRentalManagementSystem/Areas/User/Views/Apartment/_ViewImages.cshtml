@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ApartmentImageViewModel>
+<div class="form-group mb-3">
+    <div class="d-flex flex-wrap justify-content-start">
+        @foreach (var image in Model)
+        {<div class="image_container d-flex justify-content-center position-relative">
+                <img src="./../../../images/apartment_images/@image.ImageName" alt="Image">
+            </div>
+        }
+    </div>
+</div>
+<div class="form-group mb-3">
+    <input type="button" value="Close" data-bs-dismiss="modal" class="btn btn_modal_close" />
+</div>

@@ -1,0 +1,244 @@
+﻿@model ApartmentBookingViewModel
+<form enctype="multipart/form-data" asp-action="Create" method="post" id="form">
+    <div class="col-md-12 mx-auto d-flex">
+        <div class="row">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group mb-3 col-md-6 float-left px-3">
+                <label asp-for="BuildingShortName" class="form-label"></label>
+                <select asp-for="BuildingId" class="form-control" asp-items="@(new SelectList(string.Empty, "BuildingId", "BuildingShortName" ))">
+                    <option value="" class="text-danger">Select...</option>
+                </select>
+                <span asp-validation-for="BuildingId" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 col-md-6 float-left px-3">
+                <label asp-for="ApartmentName" class="form-label"></label>
+                @if (ViewBag.Apartments != null)
+                {
+                    <select asp-for="AptId" class="form-control" asp-items='@(new SelectList(string.Empty, "AptId", "ApartmentName" ))'>
+                    </select>
+                }
+                <span asp-validation-for="AptId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3 col-md-6 float-left px-3">
+                <label asp-for="MonthlyRent" class="form-label"></label>
+                <input asp-for="MonthlyRent" class="form-control" value=""  readonly/>
+                <span asp-validation-for="MonthlyRent" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 col-md-6 float-left px-3">
+                <label asp-for="SecurityDepositAmount" class="form-label"></label>
+                <input asp-for="SecurityDepositAmount" class="form-control" value="" readonly/>
+                <span asp-validation-for="SecurityDepositAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 col-md-6 float-left px-3">
+                <label asp-for="TenantFullName" class="form-label"></label>
+                @if (ViewBag.Tenants != null)
+                {
+                    <select asp-for="TenantId" class="form-control" asp-items='@(new SelectList(@ViewBag.Tenants, "TenantId", "TenantFullName" ))'>
+                        <option value="" class="text-danger">Select...</option>
+                    </select>
+                }
+                <span asp-validation-for="TenantId" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 col-md-6 float-left px-3">
+                <label asp-for="BookingStartDate" class="form-label"></label>
+                <input asp-for="BookingStartDate" class="form-control" value="" />
+                <span asp-validation-for="BookingStartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 col-md-6 float-left px-3">
+                <label asp-for="BookingEndDate" class="form-label"></label>
+                <input asp-for="BookingEndDate" class="form-control" value="" />
+                <span asp-validation-for="BookingEndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 px-3 col-md-12 float-left">
+                <label asp-for="OtherBookingDetails" class="form-label d-block"></label>
+                <textarea asp-for="OtherBookingDetails" class="form-control" text-wrap:normal" type="text" placeholder="Write here (Optional)"></textarea>
+                <span asp-validation-for="OtherBookingDetails" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 mx-auto d-flex">
+        <div id="paymentSection" class="dis-none row">
+            <div><span class="sub_page_header float-none">PAYMENT SECTION</span></div><br />
+            <div class="form-group mb-3 col-md-6 float-left px-3">
+                <label asp-for="PaymentTypeDetails" class="form-label"></label>
+                <select asp-for="PaymentTypeId" class="form-control" asp-items="@(new SelectList(string.Empty, "PaymentTypeId", "PaymentTypeDetails" ))">
+                </select>
+                <span asp-validation-for="PaymentTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 px-3 col-md-6 float-left">
+                <label asp-for="PaymentDate" class="form-label d-block"></label>
+                <input asp-for="PaymentDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly/>
+                <span asp-validation-for="PaymentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 px-3 col-md-6 float-left">
+                <label asp-for="ReturnDate" class="form-label d-block"></label>
+                <input asp-for="ReturnDate" class="form-control" value="" readonly/>
+                <span asp-validation-for="ReturnDate" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 px-3 col-md-6 float-left">
+                <label asp-for="PaymemtAmount" class="form-label"></label>
+                <input type="text" asp-for="PaymemtAmount" class="form-control" />
+                <span asp-validation-for="PaymemtAmount" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 mx-auto d-flex">
+        <div class="row">
+            <div class="form-group mb-3 col-md-12 px-3">
+                <input type="button" value="Confirmed" id="btnConfirmed" class="btn btn_modal_close" />
+                <input type="submit" value="Provisional" id="btnProvisional" class="btn btn_modal" />
+
+
+                <input type="button" value="Cencel" id="btnCancelPayment" class="btn btn_modal_close dis-none" />
+                <input type="submit" value="Submit" id="btnSubmit" class="btn btn_modal dis-none" />
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/jquery-validate/jquery.validate.js"></script>
+<script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script>
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/User/ApartmentBooking/GetBuilding/",
+            dataType: "Json",
+            success: function (data) {
+                $.each(data, function (index, value) {
+                    $('#BuildingId').append('<option value="' + value.buildingId + '">' + value.buildingShortName + '</option>')
+                });
+            }
+        });
+        $('#BuildingId').change(function () {
+            $('#AptId').empty();
+            var id = $('#BuildingId').val();
+            if (id > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/User/ApartmentBooking/GetByBuildingId?id=" + id,
+                    dataType: "Json",
+                    success: function (data) {
+                        $('#AptId').append('<option class="text-danger" value="">Select...</option>')
+                        $.each(data, function (index, value) {
+                            $('#AptId').append('<option value="' + value.aptId + '">' + value.apartmentName + '</option>')
+                        });
+                    }
+                })
+            }
+        });
+        $('#AptId').change(function () {
+            $('#MonthlyRent').empty();
+            $('#SecurityDepositAmount').empty();
+            var id = $('#AptId').val();
+            if (id > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/User/ApartmentBooking/GetByApartmentId?id=" + id,
+                    dataType: "Json",
+                    success: function (data) {
+                        $("#MonthlyRent").attr("value", data.monthlyRent);
+                        $("#SecurityDepositAmount").attr("value", data.securityDepositAmount);
+                    }
+                })
+            }
+        });
+        $('#BookingEndDate').change(function () {
+            var now = new Date($("#BookingEndDate").val());
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+            $('#ReturnDate').val(today);
+        });
+        //$('#btnConfirmed').click(function () {
+        //    var monthlyRent = parseInt($('#MonthlyRent').val());
+        //    var dipositeAmount = parseInt($('#SecurityDepositAmount').val());
+        //    $("#PaymemtAmount").val(monthlyRent + dipositeAmount);
+        //});
+
+    });
+
+    //    $('#Quantity').focusout(function () {
+    //    var quantity = parseInt($('#Quantity').val());
+    //    var availableQuantity = parseInt($('#AvailableQuantity').val());
+    //    var salesUnitPrice = parseInt($('#SalesUnitPrice').val());
+    //    if (availableQuantity < quantity) {
+    //        alert("You Do not enough Product");
+    //    $('#Quantity').val(0);
+    //    $("#TotalPrice").val(0);
+    //    return false;
+    //    }
+    //    else {
+    //        $("#TotalPrice").val(quantity * salesUnitPrice);
+    //    return true;
+    //    }
+
+    //});
+    //    $('#Quantity').keyup(function () {
+    //    var quantity = parseInt($('#Quantity').val());
+    //    var salesUnitPrice = parseInt($('#SalesUnitPrice').val());
+    //    $("#TotalPrice").val(quantity * salesUnitPrice);
+    //});
+    //    $('#btnSave').click(function () {
+    //    var quantity = parseInt($('#Quantity').val());
+    //    var availableQuantity = parseInt($('#AvailableQuantity').val());
+    //    var salesUnitPrice = parseInt($('#SalesUnitPrice').val());
+    //    if (availableQuantity < quantity) {
+    //        alert("You Do not enough Product");
+    //    $('#Quantity').val(0);
+    //    $("#TotalPrice").val(0);
+    //    return false;
+    //    }
+    //    else {
+    //        $("#TotalPrice").val(quantity * salesUnitPrice);
+    //    return true;
+    //    }
+
+    //});
+    $(document).ready(function () {
+        $('#btnConfirmed').click(showPaymentSection);
+        $('#btnCancelPayment').click(hidePaymentSection);
+    })
+
+    function showPaymentSection() {
+        $("#form").valid();
+        if ($("#form").valid()) {
+            $('#paymentSection').fadeIn();
+            $('#btnConfirmed').hide();
+            $('#btnProvisional').hide();
+            $('#btnSubmit').show();
+            $('#btnCancelPayment').show();
+            var now = new Date($("#BookingEndDate").val());
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+            $('#ReturnDate').val(today);
+            var monthlyRent = parseInt($('#MonthlyRent').val());
+            var dipositeAmount = parseInt($('#SecurityDepositAmount').val());
+            $("#PaymemtAmount").val(monthlyRent + dipositeAmount);
+            $.ajax({
+                type: "GET",
+                url: "/User/ApartmentBooking/GetAllPaymentType/",
+                dataType: "Json",
+                success: function (data) {
+                    $.each(data, function (index, value) {
+                        $('#PaymentTypeId').append('<option class="text-danger" value="">Select...</option>')
+                        $('#PaymentTypeId').append('<option value="' + value.paymentTypeId + '">' + value.paymentTypeDetails + '</option>')
+                    });
+                }
+            });
+        }
+    }
+    function hidePaymentSection() {
+        $('#paymentSection').hide();
+        $('#btnSubmit').hide();
+        $('#btnCancelPayment').hide();
+        $('#btnConfirmed').fadeIn();
+        $('#btnProvisional').fadeIn();
+        $('#PaymentTypeId').empty();
+        $('#ReturnDate').val("");
+        $('#PaymemtAmount').val();
+    }
+
+</script>

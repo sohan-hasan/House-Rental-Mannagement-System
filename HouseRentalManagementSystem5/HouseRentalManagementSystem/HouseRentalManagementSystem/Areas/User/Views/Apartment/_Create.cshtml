@@ -1,0 +1,163 @@
+﻿@model ApartmentViewModel
+<form enctype="multipart/form-data" asp-action="Create" method="post" id="form">
+    <div class="col-md-12 mx-auto">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group mb-3">
+            <label asp-for="BuildingShortName" class="form-label"></label>
+            @if (ViewBag.Building != null)
+            {
+                <select asp-for="BuildingId" class="form-control" asp-items="@(new SelectList(@ViewBag.Building,"BuildingId", "BuildingShortName"))">
+                    <option value="">Select...</option>
+                </select>
+            }
+            <span asp-validation-for="BuildingId" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="AptTypeCode" class="form-label"></label>
+            @if (ViewBag.Types != null)
+            {
+                <select asp-for="AptTypeCode" class="form-control" asp-items="@(new SelectList(@ViewBag.Types,"AptTypeCode", "AptTypeDescription"))">
+                    <option value="">Select...</option>
+                </select>
+            }
+            <span asp-validation-for="AptTypeCode" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="ApartmentName" class="form-label"></label>
+            <input asp-for="ApartmentName" class="form-control" />
+            <span asp-validation-for="ApartmentName" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label">Apartment Facility</label>
+            <div class="card">
+                <ul class="ks-cboxtags">
+                    @if (ViewBag.Facilities != null)
+                    {
+                        @foreach (var item in ViewBag.Facilities)
+                        {
+                            <li>
+                                <input type="checkbox" id="@item.FacilityCode" value="@item.FacilityCode" name="FacilityCode">
+                                <label for="@item.FacilityCode">@item.FacilityDescription</label>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="BathroomCount" class="form-label"></label>
+            <input type="text" asp-for="BathroomCount" class="form-control" />
+            <span asp-validation-for="BathroomCount" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="BedroomCount" class="form-label"></label>
+            <input type="text" asp-for="BedroomCount" class="form-control" />
+            <span asp-validation-for="BedroomCount" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="RoomCount" class="form-label"></label>
+            <input type="text" asp-for="RoomCount" class="form-control" />
+            <span asp-validation-for="RoomCount" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="MonthlyRent" class="form-label"></label>
+            <input asp-for="MonthlyRent" class="form-control" />
+            <span asp-validation-for="MonthlyRent" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="SecurityDepositAmount" class="form-label"></label>
+            <input asp-for="SecurityDepositAmount" class="form-control" />
+            <span asp-validation-for="SecurityDepositAmount" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="OtherApartmentDetails" class="form-label"></label>
+            <textarea asp-for="OtherApartmentDetails" class="form-control" text-wrap:normal" type="text" placeholder="Write here (Optional)"></textarea>
+            <span asp-validation-for="OtherApartmentDetails" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <div class="d-flex flex-wrap justify-content-start" id="container">
+            </div>
+            <input type="file" asp-for="Photos" multiple="" class="d-none" onchange="image_select()">
+            <button class="btn btn_modal_close" type="button" onclick="document.getElementById('Photos').click()">Choose Images</button>
+        </div>
+        <div class="form-group mb-3">
+            <input type="submit" value="Create" class="btn btn_modal" />
+            <input type="button" value="Close" data-bs-dismiss="modal" class="btn btn_modal_close" />
+        </div>
+    </div>
+</form>
+<script>
+
+    var images = [];
+    // this function will select images
+    function image_select() {
+        var image = document.getElementById('Photos').files;
+        for (i = 0; i < image.length; i++) {
+            if (check_duplicate(image[i].name)) {
+                images.push({
+                    "name": image[i].name,
+                    "url": URL.createObjectURL(image[i]),
+                    "file": image[i],
+                })
+            } else {
+                alert(image[i].name + " is already added to the list");
+            }
+        }
+
+        //document.getElementById('form').reset();
+        document.getElementById('container').innerHTML = image_show();
+    }
+    // this function will show images in the DOM
+    function image_show() {
+        var image = "";
+        images.forEach((i) => {
+            image += `<div class="image_container d-flex justify-content-center position-relative">
+                   <img src="`+ i.url + `" alt="Image">
+                   <span class="position-absolute" onclick="delete_image(`+ images.indexOf(i) + `)">&times;</span>
+              </div>`;
+        })
+        return image;
+    }
+
+    // this function will get all images from the array
+    function get_image_data() {
+        var form = new FormData()
+        for (let index = 0; index < images.length; index++) {
+            form.append("file[" + index + "]", images[index]['file']);
+        }
+        return form;
+    }
+
+    // this function will delete a specific image from the container
+    function delete_image(index) {
+        var attachments = document.getElementById('Photos').files;
+        var fileBuffer = new DataTransfer();
+
+        // append the file list to an array iteratively
+        for (let i = 0; i < attachments.length; i++) {
+            // Exclude file in specified index
+            if (index !== i)
+                fileBuffer.items.add(attachments[i]);
+        }
+
+        // Assign buffer to file input
+        document.getElementById("Photos").files = fileBuffer.files;
+
+        images.splice(index, 1);
+        document.getElementById('container').innerHTML = image_show();
+    }
+
+    // this function will check duplicate images
+    function check_duplicate(name) {
+        var image = true;
+        if (images.length > 0) {
+            for (e = 0; e < images.length; e++) {
+                if (images[e].name == name) {
+                    image = false;
+                    break;
+                }
+            }
+        }
+        return image;
+    }
+</script>

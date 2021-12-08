@@ -1,0 +1,58 @@
+﻿@model ApartmentBuildingViewModel
+@{ 
+    var imagePath = "~/images/building_images/" + (Model.ImageName ?? "no-image.png");
+}
+<div class="row">
+    <div class="col-md-12 mx-auto">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BuildingId" />
+            <input type="hidden" asp-for="ImageName" />
+            <div class="form-group mb-3">
+                <label asp-for="BuildingShortName" class="form-label"></label>
+                <input asp-for="BuildingShortName" class="form-control" />
+                <span asp-validation-for="BuildingShortName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="BuildingFullName" class="form-label"></label>
+                <input asp-for="BuildingFullName" class="form-control" />
+                <span asp-validation-for="BuildingFullName" class="text-danger"></span>
+            </div>
+            <div class="form-group position-relative mb-3">
+                <label asp-for="BuildingDescription" class="form-label"></label>
+                <textarea asp-for="BuildingDescription" class="form-control" text-wrap:normal" type="text" placeholder="Write here (Optional)"></textarea>
+                <span asp-validation-for="BuildingDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="BuildingAddress" class="form-label"></label>
+                <input asp-for="BuildingAddress" class="form-control" />
+                <span asp-validation-for="BuildingAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="BuildingManager" class="form-label"></label>
+                <input asp-for="BuildingManager" class="form-control" />
+                <span asp-validation-for="BuildingManager" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="BuildingPhone" class="form-label"></label>
+                <input asp-for="BuildingPhone" class="form-control" />
+                <span asp-validation-for="BuildingPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="OtherBuildingDetails" class="form-label"></label>
+                <textarea asp-for="OtherBuildingDetails" class="form-control" text-wrap:normal" type="text" placeholder="Write here (Optional)"></textarea>
+                <span asp-validation-for="OtherBuildingDetails" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Photo" class="form-label mb-3"></label>
+                <img src="@imagePath" style="height: 90px !important; width: auto !important;" class="changeEdit form-control mb-3" asp-append-version="true" />
+                <input asp-for="Photo" class="form-control imageChange" type="file" />
+            </div>
+            <div class="form-group mb-3">
+                <input type="submit" value="Update" class="btn btn_modal" />
+                <input type="button" value="Close" data-bs-dismiss="modal" class="btn btn_modal_close" />
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/Custom/js/main.js"></script>

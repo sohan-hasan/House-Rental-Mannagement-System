@@ -1,0 +1,53 @@
+﻿@model TenantViewModel
+@{
+    var imagePath = "~/images/tenant_images/" + (Model.ImageName ?? "no-image.png");
+}
+<form enctype="multipart/form-data" asp-action="Create" method="post" id="form">
+    <div class="col-md-12 mx-auto">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="TenantId" />
+        <input type="hidden" asp-for="ImageName" />
+        <div class="form-group mb-3">
+            <label asp-for="TenantFirstName" class="form-label"></label>
+            <input asp-for="TenantFirstName" class="form-control" disabled />
+            <span asp-validation-for="TenantFirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group position-relative mb-3">
+            <label asp-for="TenantLastName" class="form-label"></label>
+            <input asp-for="TenantLastName" class="form-control" disabled />
+            <span asp-validation-for="TenantLastName" class="text-danger"></span>
+        </div>
+        <div class="form-group position-relative mb-3">
+            <label asp-for="Phone" class="form-label"></label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+        <div class="form-group position-relative mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="DateOfBirth" class="form-label"></label>
+            <input asp-for="DateOfBirth" class="form-control" disabled />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="GenderProperty" class="form-label"></label>
+            <input asp-for="GenderProperty" class="form-control" disabled />
+            <span asp-validation-for="GenderProperty" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="OtherTenantDetails" class="form-label"></label>
+            <textarea asp-for="OtherTenantDetails" class="form-control" text-wrap:normal" type="text" placeholder="Write here (Optional)" disabled></textarea>
+            <span asp-validation-for="OtherTenantDetails" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Photo" class="form-label mb-3"></label>
+            <img src="@imagePath" style="height:90px!important; width:auto!important;" class="form-control changeEdit mb-3" asp-append-version="true" />
+        </div>
+        <div class="form-group mb-3">
+            <input type="button" value="Close" data-bs-dismiss="modal" class="btn btn_modal_close" />
+        </div>
+    </div>
+</form>

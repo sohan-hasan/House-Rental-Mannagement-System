@@ -1,0 +1,226 @@
+﻿@model IEnumerable<TenantViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <div class="pl-0">
+        <div><span class="page_header">Tenant</span></div>
+        <div style="padding-left:0">
+            <button type="button" class="btn_add_new" data-bs-toggle="modal" data-bs-target="#CreateModal">Create New</button>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped list_table">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    @Html.ActionLink("###", "Index", new { SortOrder = ViewBag.SortNameParam }, new { @class = "text-decoration-none text-white" })
+                </th>
+                <th>
+                    Tenant Name
+                </th>
+                <th>
+                    Phone Number
+                </th>
+                <th>
+                    Email Address
+                </th>
+                <th class="text-center">
+                    Date Of Birth
+                </th>
+                <th class="text-center">
+                    Gender
+                </th>
+                <th class="tbl_large_field">
+                    Tenant Details
+                </th>
+                <th class="text-center">
+                    Tenant Image
+                </th>
+                <th class="text-center tbl_action">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        @item.SirialNumber
+                    </td>
+                    <td>
+                        @item.TenantFullName
+                    </td>
+                    <td>
+                        @item.Phone
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td class="text-center">
+                        @item.DateOfBirth.ToShortDateString()
+                    </td>
+                    <td class="text-center">
+                        @item.GenderProperty
+                    </td>
+                    <td class="tbl_large_field">
+                        @item.OtherTenantDetails
+                    </td>
+                    <td class="text-center">
+                        <a class="btn_view_images" onclick='ShowImage(@item.TenantId)' data-bs-toggle="modal" data-bs-target="#ViewImagesModal">View&nbsp;Images</a>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <div class="dropdown">
+                                <a class="btn_table dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Action
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" onclick='Update(@item.TenantId)' data-bs-toggle="modal" data-bs-target="#EditModal">Edit</a></li>
+                                    <li><a class="dropdown-item" asp-area="User" asp-controller="Tenant" asp-action="Delete" asp-route-id="@item.TenantId" onclick="return confirm('Are you sure to delete?')">Delete</a></li>
+                                    <li><a class="dropdown-item" onclick='Details(@item.TenantId)' data-bs-toggle="modal" data-bs-target="#DetailsModal">Details</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <div class="search_section">
+        <form asp-action="Index" method="get">
+            <div>
+                <span class="search_title">Find By Tenant Name: </span>
+                <input type="text" class="input_search" name="SearchString" value="@ViewBag.CurrentFilter" />
+                <input type="submit" value="Search" class="btn_search" />
+                <a asp-action="Index" class="btn_back_to_list">Back to List</a>
+            </div>
+        </form>
+    </div>
+    <div class="page_section">
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+    new X.PagedList.Web.Common.PagedListRenderOptions
+    {
+        ContainerDivClasses = new[] { "navication" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+    })
+    </div>
+</div>
+<div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="CreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5">
+                <h3 class="modal-title" id="detailsModalLabel">Create Apartment</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                @await Html.PartialAsync("_Create", new TenantViewModel())
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5">
+                <h3 class="modal-title" id="detailsModalLabel">Update Tenant</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                <div id="EditDiv">
+                    @if (ViewBag.Details == "Show")
+                    {
+                        <partial name="~/Areas/User/Views/Tenant/_Edit.cshtml" />
+                        ViewBag.Details = "";
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="DetailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5 ba">
+                <h3 class="modal-title" id="detailsModalLabel">Tenant Details</h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                <div id="DetailsDiv">
+                    @if (ViewBag.Details == "Show")
+                    {
+                        <partial name="~/Areas/User/Views/Tenant/_Details.cshtml" />
+                        ViewBag.Details = "";
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ViewImagesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header px-md-5 ba">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-md-5">
+                <div id="ViewImagesDiv">
+                    @if (ViewBag.ViewImages == "Show")
+                    {
+                        <partial name="~/Areas/User/Views/Tenant/_ViewImages.cshtml" />
+                        ViewBag.ViewImages = "";
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function Update(id) {
+        $.ajax({
+            url: "/User/Tenant/Edit?id=" + id,
+            type: "GET",
+            data: "",
+            contentType: 'application/json; charset = utf-8',
+            success: function (data) {
+                $('#EditDiv').show();
+                $('#EditDiv').html(data);
+            },
+            error: function () {
+                alert("Error occured")
+            }
+        })
+    }
+    function Details(id) {
+        $.ajax({
+            url: "/User/Tenant/Details?id=" + id,
+            type: "GET",
+            data: "",
+            contentType: 'application/json; charset = utf-8',
+            success: function (data) {
+                $('#DetailsDiv').show();
+                $('#DetailsDiv').html(data);
+            },
+            error: function () {
+                alert("Error occured")
+            }
+        })
+    }
+    function ShowImage(id) {
+        $.ajax({
+            url: "/User/Tenant/ShowImage?id=" + id,
+            type: "GET",
+            data: "",
+            contentType: 'application/json; charset = utf-8',
+            success: function (data) {
+                $('#ViewImagesDiv').show();
+                $('#ViewImagesDiv').html(data);
+            },
+            error: function () {
+                alert("Error occured")
+            }
+        })
+    }
+</script>

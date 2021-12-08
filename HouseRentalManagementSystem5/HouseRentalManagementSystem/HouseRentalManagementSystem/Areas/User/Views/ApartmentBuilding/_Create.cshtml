@@ -1,0 +1,64 @@
+﻿@model ApartmentBuildingViewModelMultipleInsert
+<form enctype="multipart/form-data" asp-action="Create" method="post">
+    <div class="modal-header">
+        <h5 class="modal-title" id="categoryModalLabel">Add new category</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row" id="0">
+            <div class="col-md-12 mx-auto">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="ApartmentBuildingViewModels[0].BuildingShortName" class="form-label"></label>
+                    <input asp-for="ApartmentBuildingViewModels[0].BuildingShortName" class="form-control" />
+                    <span asp-validation-for="ApartmentBuildingViewModels[0].BuildingShortName" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ApartmentBuildingViewModels[0].BuildingFullName" class="form-label"></label>
+                    <input asp-for="ApartmentBuildingViewModels[0].BuildingFullName" class="form-control" />
+                    <span asp-validation-for="ApartmentBuildingViewModels[0].BuildingFullName" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ApartmentBuildingViewModels[0].BuildingDescription" class="form-label"></label>
+                    <textarea asp-for="ApartmentBuildingViewModels[0].BuildingDescription" class="form-control" text-wrap:normal" type="text" placeholder="Write here (Optional)"></textarea>
+                    <span asp-validation-for="ApartmentBuildingViewModels[0].BuildingDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ApartmentBuildingViewModels[0].BuildingAddress" class="form-label"></label>
+                    <input asp-for="ApartmentBuildingViewModels[0].BuildingAddress" class="form-control" />
+                    <span asp-validation-for="ApartmentBuildingViewModels[0].BuildingAddress" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ApartmentBuildingViewModels[0].BuildingManager" class="form-label"></label>
+                    <input asp-for="ApartmentBuildingViewModels[0].BuildingManager" class="form-control" />
+                    <span asp-validation-for="ApartmentBuildingViewModels[0].BuildingManager" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ApartmentBuildingViewModels[0].BuildingPhone" class="form-label"></label>
+                    <input asp-for="ApartmentBuildingViewModels[0].BuildingPhone" class="form-control" />
+                    <span asp-validation-for="ApartmentBuildingViewModels[0].BuildingPhone" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ApartmentBuildingViewModels[0].OtherBuildingDetails" class="form-label"></label>
+                    <textarea asp-for="ApartmentBuildingViewModels[0].OtherBuildingDetails" class="form-control" text-wrap:normal" type="text" placeholder="Write here (Optional)"></textarea>
+                    <span asp-validation-for="ApartmentBuildingViewModels[0].OtherBuildingDetails" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ApartmentBuildingViewModels[0].ImageName" class="form-label mb-3"></label>
+                    <img id="_0" src="~/images/app_images/no-image.png" style="height:90px!important; width:auto!important;" class="form-control change_edit mb-3" asp-append-version="true" data-tag="Image" />
+                    <input asp-for="ApartmentBuildingViewModels[0].ImageName" id="ImageName" name="ImageName" class="form-control change_image" type="file" data-tag="_0" onchange="changeImage(this, event)" required />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <button id="addModelButton" type="button" class="btn btn_modal">Add more product</button>
+        </div>
+        <input id="sl" type="hidden" value="0" />
+    </div>
+    <div class="modal-footer">
+        <div class="col-md-12">
+            <input type="submit" value="Save" class="btn btn_modal" />
+            <input type="button" value="Close" data-bs-dismiss="modal" class="btn btn_modal_close" />
+        </div>
+    </div>
+</form>

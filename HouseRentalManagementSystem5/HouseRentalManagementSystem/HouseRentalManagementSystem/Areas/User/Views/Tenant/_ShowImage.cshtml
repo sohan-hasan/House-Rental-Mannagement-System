@@ -1,0 +1,11 @@
+﻿@model TenantViewModel
+@{
+    var imagePath = "~/images/tenant_images/" + (Model.ImageName ?? "no-image.png");
+}
+<div class="form-group mb-3">
+    <label asp-for="Photo" class="form-label mb-3"></label>
+    <img src="@imagePath" style="width:100%!important; height:auto!important;" class="form-control changeEdit mb-3" asp-append-version="true" />
+</div>
+<div class="form-group mb-3">
+    <input type="button" value="Close" data-bs-dismiss="modal" class="btn btn_modal_close" />
+</div>

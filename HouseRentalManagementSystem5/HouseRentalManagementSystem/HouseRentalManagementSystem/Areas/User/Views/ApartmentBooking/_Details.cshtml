@@ -1,0 +1,65 @@
+﻿@model ApartmentBookingViewModel
+<form enctype="multipart/form-data" asp-action="Create" method="post" id="form">
+    <div class="col-md-12 mx-auto">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="AptBookingId" />
+        <div class="form-group mb-3">
+            <label asp-for="BuildingShortName" class="form-label"></label>
+            @if (ViewBag.Buildings != null)
+            {
+                <select asp-for="BuildingId" class="form-control" asp-items="@(new SelectList(@ViewBag.Buildings,"BuildingId", "BuildingShortName"))" disabled>
+                    <option value="">--Select Building--</option>
+                </select>
+            }
+            <span asp-validation-for="BuildingId" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="ApartmentName" class="form-label"></label>
+            @if (ViewBag.Apartments != null)
+            {
+                <select asp-for="AptId" class="form-control" asp-items="@(new SelectList(@ViewBag.Apartments,"AptId", "ApartmentName"))" disabled>
+                    <option value="">--Select Apartment--</option>
+                </select>
+            }
+            <span asp-validation-for="AptId" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="TenantFullName" class="form-label"></label>
+            @if (ViewBag.Tenants != null)
+            {
+                <select asp-for="TenantId" class="form-control" asp-items="@(new SelectList(@ViewBag.Tenants,"TenantId", "TenantFullName"))" disabled>
+                    <option value="">--Select Tenant--</option>
+                </select>
+            }
+            <span asp-validation-for="TenantId" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="BookingStatusDescription" class="form-label"></label>
+            @if (ViewBag.BookingStatuses != null)
+            {
+                <select asp-for="BookingStatusCode" class="form-control" asp-items="@(new SelectList(@ViewBag.BookingStatuses,"BookingStatusCode", "BookingStatusDescription"))" disabled>
+                    <option value="">--Select Booking Status--</option>
+                </select>
+            }
+            <span asp-validation-for="BookingStatusCode" class="text-danger"></span>
+        </div>
+        <div class="form-group position-relative mb-3">
+            <label asp-for="BookingStartDate" class="form-label"></label>
+            <input asp-for="BookingStartDate" class="form-control" disabled />
+            <span asp-validation-for="BookingStartDate" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="BookingEndDate" class="form-label"></label>
+            <input asp-for="BookingEndDate" class="form-control" disabled/>
+            <span asp-validation-for="BookingEndDate" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="OtherBookingDetails" class="form-label"></label>
+            <textarea asp-for="OtherBookingDetails" class="form-control" text-wrap:normal" type="text" placeholder="Write here (Optional)" disabled></textarea>
+            <span asp-validation-for="OtherBookingDetails" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <input type="button" value="Close" data-bs-dismiss="modal" class="btn btn_modal_close" />
+        </div>
+    </div>
+</form>

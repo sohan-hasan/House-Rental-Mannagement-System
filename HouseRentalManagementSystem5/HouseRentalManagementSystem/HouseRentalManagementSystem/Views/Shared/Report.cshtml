@@ -1,0 +1,6 @@
+﻿@model FastReport.Web.WebReport
+@{
+    ViewData["Title"] = "Tenants - Report";
+}
+<a class="btn btn-danger" asp-controller="Reports" asp-action="Pdf">Download PDF</a><br /><br />
+@await ViewBag.WebReport.Render()
